@@ -1,7 +1,6 @@
-from PyQt6.QtWidgets import QMainWindow, QHBoxLayout, QVBoxLayout, QLabel, QWidget, QPushButton, QComboBox, QListWidget, QInputDialog, QSlider, QListWidgetItem, QMenuBar, QDialog
+from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QWidget, QPushButton, QComboBox,  QInputDialog
 from PyQt6.QtWidgets import QWidget
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QWidget
-
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal
 from typing import Dict
 from GUI.video_widget import VideoWidget

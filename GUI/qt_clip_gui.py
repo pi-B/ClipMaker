@@ -1,12 +1,8 @@
+import logging
 from PyQt6.QtWidgets import QMainWindow, QHBoxLayout, QVBoxLayout, QLabel, QWidget, QPushButton, QComboBox, QListWidget, QInputDialog, QSlider, QListWidgetItem, QMenuBar, QDialog
-from PyQt6.QtGui import QAction, QIcon
-from PyQt6.QtCore import QSize, Qt, QUrl, QTimer, pyqtSignal
-from PyQt6.QtMultimediaWidgets import QVideoWidget
-from PyQt6.QtMultimedia import QMediaPlayer
-from PyQt6.QtGui import QColor, QPalette
+from PyQt6.QtCore import QSize,  QTimer, pyqtSignal
 from models.configuration import Configuration
 from typing import Dict
-import logging
 from collections import OrderedDict
 from models.clips import Clip
 from ffmpeg import probe
