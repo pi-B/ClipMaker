@@ -138,7 +138,7 @@ class SetupGUI(QWidget):
             logging.debug("finalizing")
             self.projectConf.projectName        = self.input_project_name.text()
             self.projectConf.inputVideo         = self.source_video_path.text()
-            self.projectConf.outputDirectory    = self.source_video_path.text() 
+            self.projectConf.outputDirectory    = self.output_directory_path.text() 
             
             self.main_window = Qt_ClipGUI(self.projectConf)  
             self.main_window.show() 

@@ -13,7 +13,7 @@ def create_video(output_folder: str, base_video_path: str, v : Video):
     if not Path(output_folder).absolute().exists():
         Path(output_folder).absolute().mkdir()
         
-    temp_path = Path(output_folder+"/.temp").absolute()
+    temp_path = Path(output_folder+"/.temp/").absolute()
     if not temp_path.exists():
         temp_path.mkdir()
     
