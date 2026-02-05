@@ -31,7 +31,7 @@ class Qt_ClipGUI(QMainWindow):
         self.conf = conf
         
         super().__init__()
-        self.setFixedSize(QSize(1280,840))
+        self.setMinimumSize(QSize(1280,840))
         self.setWindowTitle(f"Clip Maker - {conf.projectName}")
         
         
@@ -54,17 +54,6 @@ class Qt_ClipGUI(QMainWindow):
         self.video_widget.setLayout(self.video_layout)
         self.main_layout.addWidget(self.video_widget, 7)
 
-        
-        self.video_player_widget = VideoWidget(self.conf)
-        self.video_layout.addLayout(self.video_player_widget.video_player_layout)
-        self.video_layout.addWidget(self.video_player_widget,7)
-        
-        self.clip_widget = ClipWidget(self.category_dict, self.video_widget)
-        self.main_layout.addWidget(self.clip_widget, 3)   
-        
-        self.control_widget = ControlWidget(self.video_player_widget, self.clip_widget, self.category_dict, self.category_dict_changed)
-        self.video_layout.addWidget(self.control_widget,1)
-       
         # FAKE DATA FOR TESTING PURPOSES
         self.category_dict["offense_erreur"] = [
             Clip("00:00:01", "00:00:03"),
@@ -89,8 +78,18 @@ class Qt_ClipGUI(QMainWindow):
             Clip("00:33:15", "00:33:22"),
             Clip("00:49:50", "00:49:58"),
         ]
-        self.clip_widget.display_clip_list()
         ################################
+        
+        self.video_player_widget = VideoWidget(self.conf)
+        self.video_layout.addLayout(self.video_player_widget.video_player_layout)
+        self.video_layout.addWidget(self.video_player_widget,8)
+        
+        self.clip_widget = ClipWidget(self.category_dict, self.video_widget)
+        self.main_layout.addWidget(self.clip_widget, 2)   
+        
+        self.control_widget = ControlWidget(self.video_player_widget, self.clip_widget, self.category_dict, self.category_dict_changed)
+        self.video_layout.addWidget(self.control_widget,1)
+       
         
         self.show()
 

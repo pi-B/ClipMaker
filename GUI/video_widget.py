@@ -1,5 +1,4 @@
-from PyQt6.QtWidgets import QWidget
-from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QWidget, QSlider
+from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QWidget, QSlider, QSizePolicy
 from PyQt6.QtMultimedia import QMediaPlayer
 from PyQt6.QtMultimediaWidgets import QVideoWidget
 from PyQt6.QtCore import Qt, QUrl
@@ -17,10 +16,18 @@ class VideoWidget(QWidget):
         self.media_player = QMediaPlayer()
         self.media_player.setSource(QUrl.fromLocalFile(conf.inputVideo))
         self.video_widget = QVideoWidget()
+        self.video_widget.setAspectRatioMode(Qt.AspectRatioMode.KeepAspectRatioByExpanding)
+        self.video_widget.setSizePolicy(
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Expanding
+        )
         self.media_player.setVideoOutput(self.video_widget)
+        
+
         self.media_player.play()
         self.media_player.setPosition(0)
         self.media_player.pause()        
+
         self.video_player_layout.addWidget(self.video_widget)
         
         self.video_timeline = QSlider()

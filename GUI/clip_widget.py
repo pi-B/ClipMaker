@@ -17,17 +17,23 @@ class ClipWidget(QWidget):
         self.setLayout(self.clip_layout)
         
         self.clip_category_combobox = QComboBox()
-        self.clip_category_combobox =  qt_objects.update_combobox_values(category_dict.items(), self.clip_category_combobox)
-        self.clip_layout.addWidget(self.clip_category_combobox,2)
+        self.clip_category_combobox = qt_objects.update_combobox_values(category_dict.items(), self.clip_category_combobox)
         self.clip_category_combobox.currentTextChanged.connect(self.display_clip_list)
+        self.clip_layout.addWidget(self.clip_category_combobox,2)
         
         self.clip_listbox = QListWidget()
         self.clip_listbox.itemDoubleClicked.connect(self.jump_to_clip)
         self.clip_layout.addWidget(self.clip_listbox, 8)
         
-    def display_clip_list(self):
+        for cat in self.category_dict.keys():
+            self.display_clip_list(cat)
+            break 
+        
+    def display_clip_list(self, value : str):
         self.clip_listbox.clear()
-        for clip in self.category_dict[self.clip_category_combobox.currentText()]:
+        if value == "":
+            return
+        for clip in self.category_dict[value]:
             new_item = QListWidgetItem(f"{clip.Start}/{clip.End}")
             new_item.setData(1, clip)
             self.clip_listbox.insertItem(0,new_item)
