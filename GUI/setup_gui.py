@@ -75,11 +75,7 @@ class SetupGUI(QWidget):
         setup_layout.addLayout(categories_lyt)
         
         setup_layout.setContentsMargins(40,5,40,5)
-        
-        self.input_project_name.setText("test")
-        self.source_video_path.setText("/Users/macos/entrainement2.mp4")
-        self.output_directory_path.setText("/Users/macos/")
-        
+
         self.show()
         
     
