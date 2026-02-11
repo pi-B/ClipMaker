@@ -53,31 +53,31 @@ class Qt_ClipGUI(QMainWindow):
         self.video_widget.setLayout(self.video_layout)
         self.main_layout.addWidget(self.video_widget, 7)
 
-        # FAKE DATA FOR TESTING PURPOSES
-        self.category_dict["offense_erreur"] = [
-            Clip("00:00:01", "00:00:03"),
-            Clip("00:02:10", "00:02:15"),
-            Clip("00:05:30", "00:05:36"),
-            Clip("00:09:45", "00:09:50"),
-            Clip("00:14:20", "00:14:27"),
-            Clip("00:21:05", "00:21:12"),
-            Clip("00:28:40", "00:28:46"),
-            Clip("00:36:10", "00:36:18"),
-            Clip("00:44:55", "00:45:02"),
-            Clip("00:58:30", "00:58:38"),
-        ]
+        # # FAKE DATA FOR TESTING PURPOSES
+        # self.category_dict["offense_erreur"] = [
+        #     Clip("00:00:01", "00:00:03"),
+        #     Clip("00:02:10", "00:02:15"),
+        #     Clip("00:05:30", "00:05:36"),
+        #     Clip("00:09:45", "00:09:50"),
+        #     Clip("00:14:20", "00:14:27"),
+        #     Clip("00:21:05", "00:21:12"),
+        #     Clip("00:28:40", "00:28:46"),
+        #     Clip("00:36:10", "00:36:18"),
+        #     Clip("00:44:55", "00:45:02"),
+        #     Clip("00:58:30", "00:58:38"),
+        # ]
 
-        self.category_dict["contre_attaque positif"] = [
-            Clip("00:00:05", "00:00:08"),
-            Clip("00:03:20", "00:03:27"),
-            Clip("00:07:45", "00:07:52"),
-            Clip("00:12:30", "00:12:36"),
-            Clip("00:18:10", "00:18:18"),
-            Clip("00:25:40", "00:25:48"),
-            Clip("00:33:15", "00:33:22"),
-            Clip("00:49:50", "00:49:58"),
-        ]
-        ################################
+        # self.category_dict["contre_attaque positif"] = [
+        #     Clip("00:00:05", "00:00:08"),
+        #     Clip("00:03:20", "00:03:27"),
+        #     Clip("00:07:45", "00:07:52"),
+        #     Clip("00:12:30", "00:12:36"),
+        #     Clip("00:18:10", "00:18:18"),
+        #     Clip("00:25:40", "00:25:48"),
+        #     Clip("00:33:15", "00:33:22"),
+        #     Clip("00:49:50", "00:49:58"),
+        # ]
+        # ################################
         
         self.video_player_widget = VideoWidget(self.conf)
         self.video_layout.addLayout(self.video_player_widget.video_player_layout)
@@ -92,12 +92,6 @@ class Qt_ClipGUI(QMainWindow):
         
         self.show()
 
-    # def eventFilter(self, a0, a1):
-    #     if(a1.type() == QEvent.Type.KeyPress):
-    #         logging.debug(QKeyEvent(a1).key())
-    #         logging.debug(QKeyEvent(a1).text())
-    #     return super().eventFilter(a0, a1)
-    
             
     def update_category_comboboxes(self, values: dict):
         for combobox in [self.control_widget.video_category_combobox, self.clip_widget.clip_category_combobox]:
