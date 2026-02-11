@@ -1,6 +1,7 @@
 import logging
-from PyQt6.QtWidgets import QMainWindow, QHBoxLayout, QVBoxLayout, QLabel, QWidget, QPushButton, QComboBox, QListWidget, QInputDialog, QSlider, QListWidgetItem, QMenuBar, QDialog
-from PyQt6.QtCore import QSize,  QTimer, pyqtSignal
+from PyQt6.QtWidgets import QMainWindow, QHBoxLayout, QVBoxLayout, QLabel, QWidget, QPushButton, QComboBox, QListWidgetItem, QDialog, QApplication
+from PyQt6.QtCore import QSize,  QTimer, pyqtSignal, Qt, QEvent
+from PyQt6.QtGui import QKeyEvent
 from models.configuration import Configuration
 from typing import Dict
 from collections import OrderedDict
@@ -13,8 +14,10 @@ from GUI.control_widget import ControlWidget
 from GUI.clip_widget import ClipWidget
 from models.video import Video
 from services.exporter import create_video 
+from services import auto_saver
 from utils.qt_objects import update_combobox_values
-
+import os
+from datetime import datetime as dt
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -35,7 +38,7 @@ class Qt_ClipGUI(QMainWindow):
         self.init_category_list()
         self.category_dict_changed.connect(self.update_category_comboboxes)
         
-        
+                
         self.main_layout = QHBoxLayout()
         self.central = QWidget()
         self.setCentralWidget(self.central)
@@ -85,10 +88,17 @@ class Qt_ClipGUI(QMainWindow):
         
         self.control_widget = ControlWidget(self.video_player_widget, self.clip_widget, self.category_dict, self.category_dict_changed)
         self.video_layout.addWidget(self.control_widget,1)
-       
+        
         
         self.show()
 
+    # def eventFilter(self, a0, a1):
+    #     if(a1.type() == QEvent.Type.KeyPress):
+    #         logging.debug(QKeyEvent(a1).key())
+    #         logging.debug(QKeyEvent(a1).text())
+    #     return super().eventFilter(a0, a1)
+    
+            
     def update_category_comboboxes(self, values: dict):
         for combobox in [self.control_widget.video_category_combobox, self.clip_widget.clip_category_combobox]:
               combobox = update_combobox_values(values.items(),combobox)
@@ -137,6 +147,10 @@ class Qt_ClipGUI(QMainWindow):
                 self.categories_lyt.addWidget(self.export_dict[cat])
         self.export_lyt.addLayout(self.categories_lyt)
         
+        self.view_export_btn = QPushButton(text="Open output directory")
+        self.view_export_btn.setEnabled(False)
+        self.view_export_btn.clicked.connect(self.open_export_dir)
+        
         self.export_close_btn = QPushButton(text="Close")
         self.export_close_btn.setEnabled(False)
         self.export_close_btn.clicked.connect(self.export_wdw.close)
@@ -147,7 +161,6 @@ class Qt_ClipGUI(QMainWindow):
 
 
     def export_video(self):
-          
         for category in self.category_dict.keys():
             logging.debug("Starting creation of video for " + category)
             new_vid = Video(str(category))
@@ -160,7 +173,9 @@ class Qt_ClipGUI(QMainWindow):
                 message_lbl.setText(f"OK {category}")
                 message_lbl.setStyleSheet("QLabel {color : green}")         
         self.export_close_btn.setEnabled(True)
-        
+    
+    def open_export_dir(self):
+        system_os = os.uname()
         
 def get_video_duration(path: str) -> int:
     json_info = probe(path)

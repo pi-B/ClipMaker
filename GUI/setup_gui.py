@@ -4,9 +4,12 @@ from models.configuration import Configuration
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QWidget, QPushButton,  QListWidget, QInputDialog, QFileDialog, QLineEdit, QFormLayout
 from PyQt6.QtCore import QDir, Qt
 from GUI.qt_clip_gui import Qt_ClipGUI
+from services.auto_saver import AutoSaver
 
 class SetupGUI(QWidget):
     def __init__(self, conf: Configuration):
+        # auto_saver = AutoSaver() # test if the 
+
         super().__init__()
         self.projectConf = conf
         self.setFixedSize(770,540)
@@ -72,6 +75,10 @@ class SetupGUI(QWidget):
         setup_layout.addLayout(categories_lyt)
         
         setup_layout.setContentsMargins(40,5,40,5)
+        
+        self.input_project_name.setText("test")
+        self.source_video_path.setText("/Users/macos/entrainement2.mp4")
+        self.output_directory_path.setText("/Users/macos/")
         
         self.show()
         

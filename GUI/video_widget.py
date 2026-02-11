@@ -6,11 +6,12 @@ from models.configuration import Configuration
 from ffmpeg import probe
 from datetime import timedelta
 from utils import time_conversions as tc
-
+import logging
 
 class VideoWidget(QWidget):
     def __init__(self, conf : Configuration):
         super().__init__()
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus) # Added this to have focus with key pressed
         self.video_player_layout = QVBoxLayout()
         self.setLayout(self.video_player_layout)
         self.media_player = QMediaPlayer()
@@ -53,6 +54,21 @@ class VideoWidget(QWidget):
         self.timeline_layout.addWidget(self.video_timeline)
         self.video_player_layout.addLayout(self.timeline_layout)
         
+    def keyPressEvent(self, a0):
+        super().keyPressEvent(a0)
+        logging.debug(f"What has been pressed: {a0.key()}")
+        if a0.key() == Qt.Key.Key_Right:
+            self.forward_video(5000)
+        elif a0.key() == Qt.Key.Key_Left:
+            self.backward_video(5000)
+        elif a0.key() == Qt.Key.Key_Space:
+            logging.debug("Key space is pressed")
+            if self.media_player.isPlaying():
+                self.media_player.pause()
+            else :
+                self.media_player.play()
+
+        
     def change_time_label(self,value):        
         hhmmss_time = tc.Timestamp_to_hhmmss(value)
         self.current_time_lbl.setText(f"{hhmmss_time} / {self.video_hhmmss_lenght}")
@@ -63,7 +79,16 @@ class VideoWidget(QWidget):
         self.media_player.setPosition(value)
         self.media_player.play()
         
-
+    def forward_video(self, duration: int):
+        # self.media_player.pause()
+        self.media_player.setPosition(self.media_player.position() + duration)
+        # self.media_player.play()
+    
+    def backward_video(self, duration: int):
+        # self.media_player.pause()
+        self.media_player.setPosition(self.media_player.position() - duration)
+        # self.media_player.play()
+        
     def change_video_timeline(self,value):
         self.video_timeline.blockSignals(True)
         self.video_timeline.setSliderPosition(value)
