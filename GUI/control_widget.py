@@ -9,15 +9,17 @@ from utils import qt_objects
 from models.clips import Clip
 from utils import time_conversions as tc
 from datetime import datetime
+from services.auto_saver import AutoSaver
 
 class ControlWidget(QWidget):
     
-    def __init__(self, video_widget : VideoWidget, clip_widget : ClipWidget, category_dict : Dict[str,Clip], category_signal : pyqtSignal):
+    def __init__(self, video_widget : VideoWidget, clip_widget : ClipWidget, category_dict : Dict[str,Clip], category_signal : pyqtSignal, auto_saver: AutoSaver):
         super().__init__()
         self.video_widget = video_widget
         self.clip_widget = clip_widget
         self.category_signal = category_signal
         self.category_dict = category_dict
+        self.auto_saver = auto_saver
         self.buttons_layout = QVBoxLayout()
         self.setLayout(self.buttons_layout)
         self.top_button_layout = QHBoxLayout()
@@ -110,6 +112,7 @@ class ControlWidget(QWidget):
     def add_clip_to_list(self, clip : Clip):
         current_category = self.video_category_combobox.currentText()
         self.category_dict[current_category].append(clip)
+        self.auto_saver.add_clip(current_category,clip)
         self.clip_widget.update_clip_listbox(current_category)
         # In ca
 

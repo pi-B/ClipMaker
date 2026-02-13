@@ -1,7 +1,7 @@
 from pathlib import Path
 import logging
 from models.configuration import Configuration
-from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QWidget, QPushButton,  QListWidget, QInputDialog, QFileDialog, QLineEdit, QFormLayout
+from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QWidget, QPushButton,  QListWidget, QInputDialog, QFileDialog, QLineEdit, QFormLayout,QListWidgetItem
 from PyQt6.QtCore import QDir, Qt
 from GUI.qt_clip_gui import Qt_ClipGUI
 from services.auto_saver import AutoSaver
@@ -76,6 +76,16 @@ class SetupGUI(QWidget):
         
         setup_layout.setContentsMargins(40,5,40,5)
 
+        self.input_project_name.setText("tcms_blac_07012026")
+        self.source_video_path.setText("/Users/macos/Downloads/tcms_blac/tcms_blac_07012026.mp4")
+        self.output_directory_path.setText("/Users/macos/Downloads/tcms_blac/")
+        it1 = QListWidgetItem()
+        it1.setText("MT1")
+        it2 = QListWidgetItem()
+        it2.setText("MT2")
+        self.categories_list.addItem(it1)
+        self.categories_list.addItem(it2)
+
         self.show()
         
     
@@ -142,6 +152,9 @@ class SetupGUI(QWidget):
             self.projectConf.projectName        = self.input_project_name.text()
             self.projectConf.inputVideo         = self.source_video_path.text()
             self.projectConf.outputDirectory    = self.output_directory_path.text() 
+            
+            for i in range(self.categories_list.count()) :
+                self.projectConf.preconfiguredCategories.append(self.categories_list.item(i).text())
             
             self.main_window = Qt_ClipGUI(self.projectConf)  
             self.main_window.show() 

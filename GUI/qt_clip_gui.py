@@ -14,7 +14,7 @@ from GUI.control_widget import ControlWidget
 from GUI.clip_widget import ClipWidget
 from models.video import Video
 from services.exporter import create_video 
-from services import auto_saver
+from services.auto_saver import AutoSaver
 from utils.qt_objects import update_combobox_values
 import os
 from datetime import datetime as dt
@@ -79,20 +79,31 @@ class Qt_ClipGUI(QMainWindow):
         # ]
         # ################################
         
+        # Initialising the autosaver object, that is passed to all other widget to save the important changes
+        central_auto_saver = AutoSaver(self.conf.outputDirectory, self.conf.preconfiguredCategories)
+        if len(central_auto_saver.categories_dict) != 0 :
+            self.retrieve_existing_clips(central_auto_saver.categories_dict)
+        
         self.video_player_widget = VideoWidget(self.conf)
         self.video_layout.addLayout(self.video_player_widget.video_player_layout)
         self.video_layout.addWidget(self.video_player_widget,8)
         
-        self.clip_widget = ClipWidget(self.category_dict, self.video_widget)
+        self.clip_widget = ClipWidget(self.category_dict, self.video_player_widget)
         self.main_layout.addWidget(self.clip_widget, 2)   
         
-        self.control_widget = ControlWidget(self.video_player_widget, self.clip_widget, self.category_dict, self.category_dict_changed)
+        self.control_widget = ControlWidget(self.video_player_widget, self.clip_widget, self.category_dict, self.category_dict_changed, central_auto_saver)
         self.video_layout.addWidget(self.control_widget,1)
         
         
         self.show()
 
-            
+    def retrieve_existing_clips(self, categories_dict: dict):
+        for cat in categories_dict:
+            if self.category_dict.get(cat) is None :
+                self.category_dict[cat] = []
+            for clip in categories_dict[cat]:
+                self.category_dict[cat].append(Clip(clip[0], clip[1]))
+        
     def update_category_comboboxes(self, values: dict):
         for combobox in [self.control_widget.video_category_combobox, self.clip_widget.clip_category_combobox]:
               combobox = update_combobox_values(values.items(),combobox)
@@ -111,14 +122,7 @@ class Qt_ClipGUI(QMainWindow):
         for cat in od:
             comb.addItem(cat)
         comb.setCurrentText(current_value)
-        
 
-        
-    def jump_to_clip(self,item : QListWidgetItem):
-        clip = item.data(1)
-        timestamp = tc.Hhmmss_to_timestamp(clip.Start)
-        self.change_video_frame(timestamp)
-    
         
     def export_project(self):
         logging.debug("Starting export")

@@ -46,4 +46,4 @@ class ClipWidget(QWidget):
     def update_clip_listbox(self, category: str):
         # Maybe force change of the category 
         if self.clip_category_combobox.currentText() == category:
-            self.display_clip_list()
+            self.display_clip_list(category)
