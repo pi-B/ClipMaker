@@ -59,15 +59,23 @@ def create_video(output_folder: str, base_video_path: str, v : Video):
         return
     
     logging.info(f"Finished outputing in {datetime.now() - concat_start} for {v.Title}")
-    try:
-        os.rmdir(temp_path)
-    except Exception as e:
-        logging.error(f"{e=}")
-        return
     clean_output_directory(output_folder)
     
 def clean_output_directory(output_folder: str):
-    if Path(output_folder + "/.temp").exists():
-        os.rmdir(output_folder + "/.temp")
+    temp_dir = Path(output_folder + "/.temp")
+    if temp_dir.exists():
+        for p in sorted(temp_dir.glob('**/*') , reverse=True):
+            if not p.exists():
+                continue
+            p.chmod(0o666)
+            if p.is_dir():
+                p.rmdir()
+            else:
+                p.unlink()
+        
+        try:
+            temp_dir.rmdir()
+        except OSError as e:
+            logging.error(f"Could not delete {temp_dir} : {e=}")
         logging.info("successfully removed the temporary folder")
  
