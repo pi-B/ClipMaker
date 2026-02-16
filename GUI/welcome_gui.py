@@ -4,7 +4,13 @@ import json
 from pathlib import Path
 from models.configuration import Configuration
 from GUI.qt_clip_gui import Qt_ClipGUI
+from GUI.setup_gui import SetupGUI
 import utils.conf_files as conf_utils 
+
+auto_save_template = {
+    "project_name" : "",
+    "clips" : []
+}
 
 class WelcomeGUI(QMainWindow):
     def __init__(self):
@@ -58,5 +64,8 @@ class WelcomeGUI(QMainWindow):
         self.main.show()
     
     def start_new_project(self):
+        self.setup = SetupGUI()
+        self.close()
+        self.setup.show()
         pass
                 

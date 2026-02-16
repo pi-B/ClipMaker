@@ -80,7 +80,7 @@ class Qt_ClipGUI(QMainWindow):
         # ################################
         
         # Initialising the autosaver object, that is passed to all other widget to save the important changes
-        central_auto_saver = AutoSaver(self.conf.outputDirectory, self.conf.preconfiguredCategories)
+        central_auto_saver = AutoSaver(self.conf.outputDirectory, self.conf.inputVideo, self.conf.projectName)
         if len(central_auto_saver.categories_dict) != 0 :
             self.retrieve_existing_clips(central_auto_saver.categories_dict)
         
@@ -88,7 +88,7 @@ class Qt_ClipGUI(QMainWindow):
         self.video_layout.addLayout(self.video_player_widget.video_player_layout)
         self.video_layout.addWidget(self.video_player_widget,8)
         
-        self.clip_widget = ClipWidget(self.category_dict, self.video_player_widget)
+        self.clip_widget = ClipWidget(self.category_dict, self.video_player_widget, central_auto_saver)
         self.main_layout.addWidget(self.clip_widget, 2)   
         
         self.control_widget = ControlWidget(self.video_player_widget, self.clip_widget, self.category_dict, self.category_dict_changed, central_auto_saver)

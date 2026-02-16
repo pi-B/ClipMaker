@@ -49,6 +49,8 @@ class ControlWidget(QWidget):
         
         self.connect_actions_buttons()
         self.bind_keystroke()
+        
+        self.current_clip = None
     
     def connect_actions_buttons(self):
         for key in self.buttons_dict.keys():
@@ -78,6 +80,9 @@ class ControlWidget(QWidget):
         self.video_widget.media_player.pause()
 
     def start_clipping(self):
+        if self.video_category_combobox.currentText() == "":
+            self.display_fading_message("No category selected")
+            return
         self.display_fading_message("Starting clipping")
         self.current_clip = Clip(tc.Extract_hhmmss_from_label(self.video_widget.current_time_lbl), None)
 

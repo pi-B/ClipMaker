@@ -7,11 +7,11 @@ from GUI.qt_clip_gui import Qt_ClipGUI
 from services.auto_saver import AutoSaver
 
 class SetupGUI(QWidget):
-    def __init__(self, conf: Configuration):
+    def __init__(self):
         # auto_saver = AutoSaver() # test if the 
 
         super().__init__()
-        self.projectConf = conf
+        self.projectConf = Configuration()
         self.setFixedSize(770,540)
         self.setWindowTitle("Setup your project")
         self.categoryList = []
@@ -76,9 +76,9 @@ class SetupGUI(QWidget):
         
         setup_layout.setContentsMargins(40,5,40,5)
 
-        self.input_project_name.setText("tcms_blac_07012026")
-        self.source_video_path.setText("/Users/macos/Downloads/tcms_blac/tcms_blac_07012026.mp4")
-        self.output_directory_path.setText("/Users/macos/Downloads/tcms_blac/")
+        self.input_project_name.setText("ramonville_tcms_14022026")
+        # self.source_video_path.setText("/Users/macos/Downloads/tcms_blac/tcms_blac_07012026.mp4")
+        # self.output_directory_path.setText("/Users/macos/Downloads/tcms_blac/")
         it1 = QListWidgetItem()
         it1.setText("MT1")
         it2 = QListWidgetItem()
@@ -99,7 +99,10 @@ class SetupGUI(QWidget):
         self.file_explorer = QFileDialog(self)
         output_path = self.file_explorer.getExistingDirectory(self, caption="Choose the directory to output the final videos to",directory=QDir.currentPath())
         if len(output_path) != 0:
+            if output_path[len(output_path)-1] != "/":
+                output_path += "/"
             self.output_directory_path.setText(output_path)
+            
         
     def add_category(self):
         category_name, ok = QInputDialog.getText(self,"Add a category", "Category", flags=Qt.WindowType.WindowStaysOnTopHint)
@@ -156,6 +159,7 @@ class SetupGUI(QWidget):
             for i in range(self.categories_list.count()) :
                 self.projectConf.preconfiguredCategories.append(self.categories_list.item(i).text())
             
+                        
             self.main_window = Qt_ClipGUI(self.projectConf)  
             self.main_window.show() 
             self.close()
